@@ -32,7 +32,10 @@ class TestUsers(unittest.TestCase):
         self.assertEqual(self.platform.all_users['Пользователь 1'], self.user1)
         self.assertEqual(self.platform.all_users['Пользователь 2'], self.user2)
         self.assertEqual(self.platform.all_users['Пользователь 3'], self.user3)
-        
+
+    def test_add_courses(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
