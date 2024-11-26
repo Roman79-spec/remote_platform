@@ -77,3 +77,73 @@ class Platform:
                 print(course)
         else:
             print('\nНи одного курса не добавлено!')
+            
+class Courses:
+    def __init__(self, course_name, direction_course):
+        """Инициализация атрибутов"""
+        self.course_name = course_name
+        self.direction_course = direction_course
+        self.modules = []
+        self.status = 'not started'
+        self.progress = 0
+
+    def __str__(self):
+        """Строковый метод"""
+        return f'Название: {self.course_name}. Направление: {self.direction_course}.'
+    
+    def add_module(self, module):
+        """Добавление модуля"""
+        self.modules.append(module)
+
+    def course_started(self, course, user):
+        """Начало курса"""
+        if course.status == 'not started':
+            if course in user.personal_course:
+                course.status = 'in progress'
+                print(f'\nКурс {course.course_name} начат! Успехов!')
+            else:
+                print(f'Нельзя начать курс {course.course_name}, он не выбран вами!')
+        else:
+            print(f'Курс {course.course_name} уже начат!')
+
+    def course_update(self):
+        """Обновление курса и прогресс"""
+        if self.status == 'in progress':
+            complete_module = sum(1 for module in self.modules if module.status == 'complete')
+            if len(self.modules) > 0:
+                self.progress = round(complete_module / len(self.modules) * 100)
+            else:
+                self.progress = 0
+        else:
+            print('Начните проходить курс!')
+
+    def complete_course(self, user):
+        """Завершаем курс"""
+        if self.progress == 100:
+            self.status = 'complete'
+            print('Вы завершили курс. Поздравляем!')
+            user.personal_course.remove(self)
+            user.history_complete_course.append(self)
+        else:
+            print('Курс еще не пройден! Завершите все модули!')
+            
+class Module:
+    def __init__(self, title):
+        """Инициализация атрибутов"""
+        self.title = title
+        self.status = 'not started'
+        self.progress = 0
+    
+    def start_module(self):
+        """Начинаем модуль"""
+        self.status = 'in progress'
+        
+    def complete_module(self, course):
+        """Завершаем модуль"""
+        if self.status == 'in progress':
+            self.status = 'complete'
+            self.progress = 100
+            course.course_update()
+            print('Поздравляем над завершением модуля!')
+        else:
+            print('Невозможно завершить модуль. Начните его прохождение!')
