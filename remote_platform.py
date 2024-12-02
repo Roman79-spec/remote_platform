@@ -1,4 +1,5 @@
 class Users:
+    """Класс для управления пользователями"""
     def __init__(self, first_name, last_name, login, password):
         """Инициализация атрибутов"""
         self.first_name = first_name
@@ -11,7 +12,8 @@ class Users:
     
     def __str__(self):
         """Строковый метод для вывода информации о пользователе"""
-        return f'Имя: {self.first_name}. Фамилия: {self.last_name}.\nЛогин: {self.login}. Пароль: {self.password}.'
+        return (f'Имя: {self.first_name}. Фамилия: {self.last_name}.\n'
+                f'Логин: {self.login}. Пароль: {self.password}.')
     
     def select_course(self, course):
         """Выбор курса"""
@@ -24,7 +26,7 @@ class Users:
     
     def print_select_courses(self):
         """Вывод выбранных курсов"""
-        print(f'\nВыбранные курсы: ')
+        print('\nВыбранные курсы: ')
         for course in self.personal_course:
             print(f'Курс: {course.course_name}. Статус: {course.status}')
 
@@ -42,11 +44,12 @@ class Users:
         print(f'\nПрогресс пользователя {self.first_name} {self.last_name}')
         if not self.personal_course:
             print('Еще ни одного курса не выбрано!')
-
         for course in self.personal_course:
-            print(f'Курс {course.course_name}. Прогресс: {course.progress}. Статус {course.status}.')
+            print(f'Курс {course.course_name}. Прогресс: {course.progress}.\n'
+                  'Статус {course.status}.')
 
 class Platform:
+    """Для управления и добавление курсов"""
     def __init__(self):
         """Инициализация атрбиутов"""
         self.all_users = {}
@@ -72,13 +75,14 @@ class Platform:
     def print_courses(self):
         """Вывод всех курсов"""
         if self.course_list:
-            print(f'Список доступных курсов: ')
+            print('Список доступных курсов: ')
             for course in self.course_list.values():
                 print(course)
         else:
             print('\nНи одного курса не добавлено!')
             
 class Courses:
+    """Для управления курсами"""
     def __init__(self, course_name, direction_course):
         """Инициализация атрибутов"""
         self.course_name = course_name
@@ -92,8 +96,13 @@ class Courses:
         return f'Название: {self.course_name}. Направление: {self.direction_course}.'
     
     def add_module(self, module):
-        """Добавление модуля"""
-        self.modules.append(module)
+        "Добавление модуля"
+        if module not in self.modules:
+            self.modules.append(module)
+        else:
+            print('Модуль уже добавлен!')
+            print('Модуль уже добавлен!')
+
 
     def course_started(self, course, user):
         """Начало курса"""
@@ -128,6 +137,7 @@ class Courses:
             print('Курс еще не пройден! Завершите все модули!')
             
 class Module:
+    "Для управления модулями"
     def __init__(self, title):
         """Инициализация атрибутов"""
         self.title = title
@@ -147,3 +157,60 @@ class Module:
             print('Поздравляем над завершением модуля!')
         else:
             print('Невозможно завершить модуль. Начните его прохождение!')
+
+user1 = Users('Боня', 'Бобикова', 'bonya_bobik', '123456789')
+user2 = Users('Бобик', 'Собачкин', 'bobik_sobachkin', '124567')
+user3 = Users('Барсик', 'Барсиков', 'barsik_barsikov', 'q1q2q3q4q5')
+
+platform = Platform()
+platform.user_registrations('Пользователь1', user1)
+platform.user_registrations('Пользователь2', user2)
+platform.user_registrations('Пользователь3', user3)
+
+course1 = Courses('Основы программирования на Python', 'Programming')
+course2 = Courses('Основы программирования на JS', 'Programming')
+course3 = Courses('Математика. Продвинутый уровень', 'Educations')
+
+module1 = Module('Модуль 1')
+module2 = Module('Модуль 2')
+module3 = Module('Модуль 3')
+
+platform.add_course('Курс 1', course1)
+platform.add_course('Курс 2', course2)
+platform.add_course('Курс 3', course3)
+
+course1.add_module(module1)
+course1.add_module(module2)
+course1.add_module(module3)
+
+platform.print_courses()
+
+
+user1.select_course(course1)
+user1.print_select_courses()
+
+
+
+platform.add_course('Курс 1', course1)
+platform.add_course('Курс 2', course2)
+platform.add_course('Курс 3', course3)
+
+
+course1.course_started(course1, user1)
+
+module1.start_module()
+module1.complete_module(course1)
+user1.show_progress()
+module2.start_module()
+module2.complete_module(course1)
+user1.show_progress()
+module3.start_module()
+module3.complete_module(course1)
+user1.show_progress()
+
+
+
+course1.course_update()
+course1.complete_course(user1)  
+
+user1.print_history_complete_courses()
