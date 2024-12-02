@@ -99,5 +99,7 @@ course1.complete_course(user1)
 
 user1.print_history_complete_courses()
 
+```
+
 ## Контакты
 email - carltokaize@gmail.com
